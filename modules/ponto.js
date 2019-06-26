@@ -22,7 +22,7 @@ module.exports = class Ponto {
                     this.connected = true
                     resolve(body)
                 } else {
-                    let error = res.statusCode + " " + res.statusMessage + " with error message : " + err
+                    let error = { statusCode: res.statusCode, statusMessage: res.statusMessage, error: err , body: body, response: res}
                     console.log(body)
                     reject(error)
                 }
@@ -67,7 +67,7 @@ module.exports = class Ponto {
         return new Promise(resolve => { setTimeout(resolve, t); });
     }
 
-    async awaitSynchronization(interval, id) {
+    async awaitSynchronization(id, interval) {
         try {
             await this.delay(interval)
             let res = await this.getSynchronization(id)

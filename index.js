@@ -10,7 +10,9 @@ function delay(t) {
 async function main() {
     let res
     var myponto = new ponto()
-    myponto.configure(process.env.PONTO_API_KEY)
+    res = await myponto.configure(process.env.PONTO_API_KEY)
+    await delay(interval)
+    console.log(res)
     res = await myponto.listFinancialInstitutions()
     await delay(interval)
     console.log(res)
@@ -23,7 +25,7 @@ async function main() {
     res = await myponto.getSynchronization(res.data.id)
     await delay(interval)
     console.log(res)
-    res = await myponto.awaitSynchronization(500, res.data.id)
+    res = await myponto.awaitSynchronization(res.data.id, 500)
     await delay(interval)
     console.log(res)
 
