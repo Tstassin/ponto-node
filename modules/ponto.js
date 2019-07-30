@@ -16,8 +16,7 @@ module.exports = class Ponto {
         return new Promise((resolve, reject) => {
             let allOptions = { ...this.options, ...options }
             request(allOptions, (err, res, body) => {
-                if (allOptions.method === "GET" && (!err && res.statusCode === 200)
-                    || allOptions.method === "POST" && (!err && res.statusCode === 201)) {
+                if ( !err && ( res.statusCode === 200 || res.statusCode === 201)) {
                     console.log(res.statusCode, res.statusMessage)
                     this.connected = true
                     resolve(body)
@@ -75,5 +74,9 @@ module.exports = class Ponto {
             else if (res.data.attributes.status == "error") throw res
             else return this.awaitSynchronization(interval, id)
         } catch (err) {throw err}
+    }
+
+    async listAccounts() {
+        return this.doRequest({ uri: "https://api.myponto.com/accounts/" })
     }
 }

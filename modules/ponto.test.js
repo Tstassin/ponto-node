@@ -4,7 +4,6 @@ require('dotenv').config()
 let myponto
 beforeAll(() =>
     myponto = new ponto()
-
 )
 
 describe("Testing Ponto object creation and configuration", () => {
@@ -50,6 +49,26 @@ describe("Testing Financial Institutions...", () => {
 })
 
 //Test here account first
+
+describe("Testing Accounts...", () => {
+
+    test("List accounts", async () => {
+        let object = {
+            "data": [
+                {
+                    "type": "account"
+                },
+                {
+                    "type": "account"
+                },
+                {
+                    "type": "account"
+                }
+            ]
+        }
+        return expect(myponto.listAccounts()).resolves.toEqual(expect.objectContaining({data: expect.arrayContaining([expect.objectContaining({type: "account"})])}))
+    })
+})
 
 describe("Testing Synchronizations...", () => {
 
