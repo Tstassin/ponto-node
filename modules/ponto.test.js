@@ -2,8 +2,10 @@ const ponto = require('./ponto')
 require('dotenv').config()
 
 let myponto
-beforeAll(() =>
+beforeAll(() => {
     myponto = new ponto()
+    myponto.configure(process.env.PONTO_API_KEY)
+    }
 )
 
 describe("Testing Ponto object creation and configuration", () => {
@@ -48,25 +50,35 @@ describe("Testing Financial Institutions...", () => {
 
 })
 
-//Test here account first
+let accountId
 
 describe("Testing Accounts...", () => {
 
+    let accounts
+
     test("List accounts", async () => {
-        let object = {
-            "data": [
-                {
-                    "type": "account"
-                },
-                {
-                    "type": "account"
-                },
-                {
-                    "type": "account"
-                }
-            ]
-        }
-        return expect(myponto.listAccounts()).resolves.toEqual(expect.objectContaining({data: expect.arrayContaining([expect.objectContaining({type: "account"})])}))
+        accounts = await myponto.listAccounts()
+        return expect(myponto.listAccounts()).resolves.toEqual(expect.objectContaining({ data: expect.arrayContaining([expect.objectContaining({ type: "account" })]) }))
+    })
+
+    test("Get account", async () => {
+        accountId = accounts.data[0].id
+        return expect(myponto.getAccount(accountId)).resolves.toMatchObject({ data: { type: "account" } })
+    })
+})
+
+
+describe("Testing Transactions...", () => {
+
+    test("List transactions", async () => {
+        let accounts = await myponto.listAccounts()
+        return expect(myponto.listTransactions(accounts.data[0].id)).resolves.toEqual(expect.objectContaining({ data: expect.arrayContaining([expect.objectContaining({ type: "transaction" })]) }))
+    })
+
+    test("Get transaction", async () => {
+        let accounts = await myponto.listAccounts()
+        let transactions = await myponto.listTransactions(accounts.data[0].id)
+        return expect(myponto.getTransaction(transactions.data[0].relationships.account.data.id, transactions.data[0].id)).resolves.toEqual(expect.objectContaining({ data: expect.objectContaining({ type: "transaction" }) }))
     })
 })
 
