@@ -1,7 +1,7 @@
 {
-  "name": "pontest",
-  "version": "0.0.1",
-  "description": "",
+  "name": "@tstassin/ponto-node",
+  "version": "0.1.1",
+  "description": "Ponto API javascript client",
   "main": "index.js",
   "scripts": {
     "test": "jest"
@@ -10,7 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^8.0.0",
-    "jest": "^24.8.0",
     "request": "^2.88.0"
+  },
+  "devDependencies": {
+    "jest": "^24.8.0"
   }
 }
