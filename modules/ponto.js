@@ -84,8 +84,8 @@ module.exports = class Ponto {
         return this.doRequest({ uri: "https://api.myponto.com/accounts/" + id })
     }
 
-    async listTransactions(accountId) {
-        return this.doRequest({ uri: "https://api.myponto.com/accounts/" + accountId + "/transactions"})
+    async listTransactions(accountId, options) {
+        return this.doRequest({ uri: "https://api.myponto.com/accounts/" + accountId + "/transactions", qs : options})
     }
 
     async getTransaction(accountId, transactionId) {

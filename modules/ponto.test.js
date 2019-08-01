@@ -82,6 +82,15 @@ describe("Testing Transactions...", () => {
     })
 })
 
+describe("Testing pagination", () => {
+
+    test("Testing pagination limit", async () => {
+        let accounts = await myponto.listAccounts()
+        let transactions = await myponto.listTransactions(accounts.data[0].id, {limit: 9})
+        return expect(transactions.data).toHaveLength(9)
+    })
+})
+
 describe("Testing Synchronizations...", () => {
 
     let synchronization
