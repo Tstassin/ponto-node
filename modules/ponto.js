@@ -34,8 +34,8 @@ module.exports = class Ponto {
         return this.doRequest()
     }
 
-    async listFinancialInstitutions() {
-        return this.doRequest({ uri: "https://api.myponto.com/financial-institutions" })
+    async listFinancialInstitutions(options) {
+        return this.doRequest({ uri: "https://api.myponto.com/financial-institutions", qs: options })
     }
     async getFinancialInstitution(id) {
         return this.doRequest({ uri: "https://api.myponto.com/financial-institutions/" + id })
@@ -76,8 +76,8 @@ module.exports = class Ponto {
         } catch (err) {throw err}
     }
 
-    async listAccounts() {
-        return this.doRequest({ uri: "https://api.myponto.com/accounts/" })
+    async listAccounts(options) {
+        return this.doRequest({ uri: "https://api.myponto.com/accounts/", qs: options })
     }
 
     async getAccount(id) {
