@@ -13,7 +13,8 @@ async function main() {
         let nextTransactions = await myponto.listTransactions(anAccount.data.id, { limit: 3, after: transactionsFromThisAccount.meta.paging.after })
         console.log(nextTransactions)
     } catch (e) {
-        console.error(e.statusCode, e.statusMessage)
+        if (e.statusCode) console.error(e.statusCode, e.statusMessage)
+        else console.error(e)
     }
 }
 

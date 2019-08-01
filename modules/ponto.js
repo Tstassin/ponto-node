@@ -30,6 +30,8 @@ module.exports = class Ponto {
     }
 
     async configure(api_key) {
+        console.log(api_key)
+        if (!api_key ) throw "Please provide a valid API Key as argument"
         this.api_key = api_key
         return this.doRequest()
     }
