@@ -1,6 +1,6 @@
 {
   "name": "@tstassin/ponto-node",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Ponto API javascript client",
   "main": "index.js",
   "repository": {
