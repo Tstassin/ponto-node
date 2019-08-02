@@ -73,7 +73,7 @@ module.exports = class Ponto {
             let res = await this.getSynchronization(id)
             if (res.data.attributes.status == "success") return res
             else if (res.data.attributes.status == "error") throw res
-            else return this.awaitSynchronization(interval, id)
+            else return this.awaitSynchronization(id, interval)
         } catch (err) {throw err}
     }
 
