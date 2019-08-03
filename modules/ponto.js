@@ -12,12 +12,13 @@ module.exports = class Ponto {
                 "Authorization": "Bearer no set"
             }
         }
-        this.connected = false
     }
 
     doRequest(options) {
+        let url = this.options.url
+        if (options && options.endpoint ) url = url + options.endpoint
         return new Promise((resolve, reject) => {
-            let allOptions = { ...this.options, ...options }
+            let allOptions = { ...this.options, ...options, url: url }
             axios(allOptions)
                 .then(response => resolve(response.data))
                 .catch(error => reject(error))
@@ -32,16 +33,20 @@ module.exports = class Ponto {
         return this.doRequest()
     }
 
+    setBaseUrl (baseUrl) {
+        this.options.url = baseUrl
+    }
+
     async listFinancialInstitutions(options) {
-        return this.doRequest({ url: "https://api.myponto.com/financial-institutions", params: options })
+        return this.doRequest({ endpoint: "/financial-institutions", params: options })
     }
     async getFinancialInstitution(id) {
-        return this.doRequest({ url: "https://api.myponto.com/financial-institutions/" + id })
+        return this.doRequest({ endpoint: "/financial-institutions/" + id })
     }
 
     async createSynchronization(resourceType, resourceId, subtype) {
         return this.doRequest({
-            url: "https://api.myponto.com/synchronizations",
+            endpoint: "/synchronizations",
             method: "POST",
             data: {
                 "data": {
@@ -57,7 +62,7 @@ module.exports = class Ponto {
     }
 
     async getSynchronization(id) {
-        return this.doRequest({ url: "https://api.myponto.com/synchronizations/" + id })
+        return this.doRequest({ endpoint: "/synchronizations/" + id })
     }
 
     delay(t) {
@@ -75,18 +80,18 @@ module.exports = class Ponto {
     }
 
     async listAccounts(options) {
-        return this.doRequest({ url: "https://api.myponto.com/accounts/", params: options })
+        return this.doRequest({ endpoint: "/accounts", params: options })
     }
 
     async getAccount(id) {
-        return this.doRequest({ url: "https://api.myponto.com/accounts/" + id })
+        return this.doRequest({ endpoint: "/accounts/" + id })
     }
 
     async listTransactions(accountId, options) {
-        return this.doRequest({ url: "https://api.myponto.com/accounts/" + accountId + "/transactions", params: options })
+        return this.doRequest({ endpoint: "/accounts/" + accountId + "/transactions", params: options })
     }
 
     async getTransaction(accountId, transactionId) {
-        return this.doRequest({ url: "https://api.myponto.com/accounts/" + accountId + "/transactions/" + transactionId })
+        return this.doRequest({ endpoint: "/accounts/" + accountId + "/transactions/" + transactionId })
     }
 }

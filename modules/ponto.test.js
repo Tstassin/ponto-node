@@ -10,11 +10,6 @@ beforeAll(() => {
 
 describe("Testing Ponto object creation and configuration", () => {
 
-    test('new Ponto Object is instance of class Ponto', () => {
-        expect(myponto).toHaveProperty("options")
-        expect(myponto).toHaveProperty("connected")
-    })
-
     test("Configuring with an empty API Key resolves to an error", () => {
         return expect(myponto.configure()).rejects.toMatch(/valid/)
     })
