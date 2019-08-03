@@ -15,9 +15,16 @@ describe("Testing Ponto object creation and configuration", () => {
         expect(myponto).toHaveProperty("connected")
     })
 
-    test("Configuring with an empty API Key resolves to an error code from Ponto base api url", () => {
-        return expect(myponto.configure("")).rejects.toMatchObject({ statusCode: 401 })
+    test("Configuring with an empty API Key resolves to an error", () => {
+        return expect(myponto.configure()).rejects.toMatch(/valid/)
     })
+    test("Configuring without providing an API Key resolves to an error", () => {
+        return expect(myponto.configure()).rejects.toMatch(/valid/)
+    })
+    test("Configuring with a wrong API Key resolves to an error from Ponto API", async () => {
+        return expect(myponto.configure("WRONG_API_KEY")).rejects.toThrow(/401/)
+    })
+
     test("Configuring with a correct API Key (sourced from environement variable PONTO_API_KEY) resolves to a response from Ponto base api url", () => {
         return expect(myponto.configure(process.env.PONTO_API_KEY)).resolves.toHaveProperty("links")
     })

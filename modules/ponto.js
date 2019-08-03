@@ -1,13 +1,16 @@
-const request = require('request')
-
+const axios = require('axios')
 
 module.exports = class Ponto {
 
     constructor() {
         this.options = {
-            uri: "https://api.myponto.com/",
-            method: "GET",
-            json: true
+            url: 'https://api.myponto.com/',
+            method: 'get',
+            responseType: 'json',
+            headers: {
+                "Accept": "application/json",
+                "Authorization": "Bearer no set"
+            }
         }
         this.connected = false
     }
@@ -15,38 +18,32 @@ module.exports = class Ponto {
     doRequest(options) {
         return new Promise((resolve, reject) => {
             let allOptions = { ...this.options, ...options }
-            request(allOptions, (err, res, body) => {
-                if ( !err && ( res.statusCode === 200 || res.statusCode === 201)) {
-                    console.log(res.statusCode, res.statusMessage)
-                    this.connected = true
-                    resolve(body)
-                } else {
-                    let error = { statusCode: res.statusCode, statusMessage: res.statusMessage, error: err , body: body, response: res}
-                    console.log(body)
-                    reject(error)
-                }
-            }).auth(null, null, true, this.api_key)
+            axios(allOptions)
+                .then(response => resolve(response.data))
+                .catch(error => reject(error))
         })
     }
 
     async configure(api_key) {
-        if (!api_key ) throw "Please provide a valid API Key as argument"
+        if (!api_key) throw "Please provide a valid API Key as argument"
         this.api_key = api_key
+        let bearer = "Bearer " + api_key
+        this.options.headers.Authorization = bearer
         return this.doRequest()
     }
 
     async listFinancialInstitutions(options) {
-        return this.doRequest({ uri: "https://api.myponto.com/financial-institutions", qs: options })
+        return this.doRequest({ url: "https://api.myponto.com/financial-institutions", params: options })
     }
     async getFinancialInstitution(id) {
-        return this.doRequest({ uri: "https://api.myponto.com/financial-institutions/" + id })
+        return this.doRequest({ url: "https://api.myponto.com/financial-institutions/" + id })
     }
 
     async createSynchronization(resourceType, resourceId, subtype) {
         return this.doRequest({
-            uri: "https://api.myponto.com/synchronizations",
+            url: "https://api.myponto.com/synchronizations",
             method: "POST",
-            json: {
+            data: {
                 "data": {
                     "type": "synchronization",
                     "attributes": {
@@ -60,7 +57,7 @@ module.exports = class Ponto {
     }
 
     async getSynchronization(id) {
-        return this.doRequest({ uri: "https://api.myponto.com/synchronizations/" + id })
+        return this.doRequest({ url: "https://api.myponto.com/synchronizations/" + id })
     }
 
     delay(t) {
@@ -74,22 +71,22 @@ module.exports = class Ponto {
             if (res.data.attributes.status == "success") return res
             else if (res.data.attributes.status == "error") throw res
             else return this.awaitSynchronization(id, interval)
-        } catch (err) {throw err}
+        } catch (err) { throw err }
     }
 
     async listAccounts(options) {
-        return this.doRequest({ uri: "https://api.myponto.com/accounts/", qs: options })
+        return this.doRequest({ url: "https://api.myponto.com/accounts/", params: options })
     }
 
     async getAccount(id) {
-        return this.doRequest({ uri: "https://api.myponto.com/accounts/" + id })
+        return this.doRequest({ url: "https://api.myponto.com/accounts/" + id })
     }
 
     async listTransactions(accountId, options) {
-        return this.doRequest({ uri: "https://api.myponto.com/accounts/" + accountId + "/transactions", qs : options})
+        return this.doRequest({ url: "https://api.myponto.com/accounts/" + accountId + "/transactions", params: options })
     }
 
     async getTransaction(accountId, transactionId) {
-        return this.doRequest({ uri: "https://api.myponto.com/accounts/" + accountId + "/transactions/" + transactionId})
+        return this.doRequest({ url: "https://api.myponto.com/accounts/" + accountId + "/transactions/" + transactionId })
     }
 }
