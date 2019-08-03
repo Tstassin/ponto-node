@@ -16,7 +16,7 @@ module.exports = class Ponto {
 
     doRequest(options) {
         let url = this.options.url
-        if (options && options.endpoint ) url = url + options.endpoint
+        if (options && options.endpoint) url = url + options.endpoint
         return new Promise((resolve, reject) => {
             let allOptions = { ...this.options, ...options, url: url }
             axios(allOptions)
@@ -25,15 +25,16 @@ module.exports = class Ponto {
         })
     }
 
-    async configure(api_key) {
+    async configure(api_key, baseUrl) {
         if (!api_key) throw "Please provide a valid API Key as argument"
         this.api_key = api_key
         let bearer = "Bearer " + api_key
         this.options.headers.Authorization = bearer
+        if (baseUrl) this.options.url = baseUrl
         return this.doRequest()
     }
 
-    setBaseUrl (baseUrl) {
+    setBaseUrl(baseUrl) {
         this.options.url = baseUrl
     }
 
