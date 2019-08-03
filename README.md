@@ -9,7 +9,8 @@ Ponto API javascript client
 
 Methods available :
 
-* async configure(api_key)
+* async configure(apiKey, _baseUrl_)
+* * _baseUrl_ is optional and lets you change or remove the api base url (for local development or using proxies)
 * async listFinancialInstitutions(_options_)
 * async getFinancialInstitution(id)
 * async createSynchronization(resourceType, resourceId, subtype)
