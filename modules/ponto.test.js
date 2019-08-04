@@ -20,7 +20,7 @@ describe("Testing Ponto object creation and configuration", () => {
         return expect(myponto.configure("WRONG_API_KEY")).rejects.toThrow(/401/)
     })
 
-    test("Configuring with a correct API Key (sourced from environement variable PONTO_API_KEY) resolves to a response from Ponto base api url", () => {
+    test("Configuring with a correct API Key (sourced from environment variable PONTO_API_KEY) resolves to a response from Ponto base api url", () => {
         return expect(myponto.configure(process.env.PONTO_API_KEY)).resolves.toHaveProperty("links")
     })
 
