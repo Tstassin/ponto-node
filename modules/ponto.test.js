@@ -19,9 +19,27 @@ describe("Testing Ponto object creation and configuration", () => {
     test("Configuring with a wrong API Key resolves to an error from Ponto API", async () => {
         return expect(myponto.configure("WRONG_API_KEY")).rejects.toThrow(/401/)
     })
-
     test("Configuring with a correct API Key (sourced from environment variable PONTO_API_KEY) resolves to a response from Ponto base api url", () => {
         return expect(myponto.configure(process.env.PONTO_API_KEY)).resolves.toHaveProperty("links")
+    })
+
+    test("Configuring with a correct API Key and no base URL parameter leaves baseURL as default", async () => {
+        await myponto.configure(process.env.PONTO_API_KEY)
+        return expect(myponto.getBaseUrl()).toMatch(/api.myponto.com/)
+    })
+    test("Configuring with a correct API Key and an empty string \"\" as base URL parameter changes baseURL to \"/”\"", async () => {
+        await myponto.configure(process.env.PONTO_API_KEY, "").catch(e => e)
+        //We throm away the error returned when configuring with an empty base URL
+        return expect(myponto.getBaseUrl()).toMatch(/\//)
+    })
+    test("Configuring with a correct API Key and a custom non-empty base URL parameter replaces baseUrl with this value", async () => {
+        await myponto.configure(process.env.PONTO_API_KEY, "https://base.url").catch(e => e)
+        //We throm away the error returned when configuring with an empty base URL
+        return expect(myponto.getBaseUrl()).toMatch("https://base.url")
+    })
+
+    afterAll(() => {
+        myponto.configure(process.env.PONTO_API_KEY, "https://api.myponto.com/")
     })
 
 })

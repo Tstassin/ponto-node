@@ -43,8 +43,8 @@ module.exports = class Ponto {
         return await this.doRequest()
     }
 
-    setBaseUrl(baseUrl) {
-        this.options.url = baseUrl
+    getBaseUrl() {
+        return this.options.url
     }
 
     async listFinancialInstitutions(options) {
