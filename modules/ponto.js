@@ -31,7 +31,7 @@ module.exports = class Ponto {
         let bearer = "Bearer " + api_key
         this.options.headers.Authorization = bearer
         console.log("API Key correctly set")
-        if (baseUrl == "" || baseUrl == "/") {
+        if (baseUrl === "" || baseUrl === "/") {
             this.options.url = "/"
             console.log("given empty base URL, replacing default url with \"/\"")
         } else if (!baseUrl) {
