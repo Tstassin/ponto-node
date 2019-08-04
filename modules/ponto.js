@@ -26,12 +26,21 @@ module.exports = class Ponto {
     }
 
     async configure(api_key, baseUrl) {
-        if (!api_key) throw "Please provide a valid API Key as argument"
+        if (!api_key) throw "Please provide at least an API Key as argument"
         this.api_key = api_key
         let bearer = "Bearer " + api_key
         this.options.headers.Authorization = bearer
-        if (baseUrl) this.options.url = baseUrl
-        return this.doRequest()
+        console.log("API Key correctly set")
+        if (baseUrl == "" || baseUrl == "/") {
+            this.options.url = "/"
+            console.log("given empty base URL, replacing default url with \"/\"")
+        } else if (!baseUrl) {
+            console.log("Using default base URL : " + this.options.url)
+        } else {
+            this.options.url = baseUrl
+            console.log("Base URL now changed to : " + baseUrl)
+        }
+        return await this.doRequest()
     }
 
     setBaseUrl(baseUrl) {

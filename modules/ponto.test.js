@@ -11,10 +11,10 @@ beforeAll(() => {
 describe("Testing Ponto object creation and configuration", () => {
 
     test("Configuring with an empty API Key resolves to an error", () => {
-        return expect(myponto.configure()).rejects.toMatch(/valid/)
+        return expect(myponto.configure()).rejects.toMatch(/Please provide at least an API Key as argument/)
     })
     test("Configuring without providing an API Key resolves to an error", () => {
-        return expect(myponto.configure()).rejects.toMatch(/valid/)
+        return expect(myponto.configure()).rejects.toMatch(/Please provide at least an API Key as argument/)
     })
     test("Configuring with a wrong API Key resolves to an error from Ponto API", async () => {
         return expect(myponto.configure("WRONG_API_KEY")).rejects.toThrow(/401/)
