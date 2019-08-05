@@ -2,9 +2,12 @@ const ponto = require('./ponto')
 require('dotenv').config()
 
 let myponto
-beforeAll(() => {
+let defaultBaseUrl
+
+beforeAll( async () => {
     myponto = new ponto()
     myponto.configure(process.env.PONTO_API_KEY)
+    defaultBaseUrl = await myponto.getDefaultBaseUrl()
     }
 )
 
@@ -25,7 +28,7 @@ describe("Testing Ponto object creation and configuration", () => {
 
     test("Configuring with a correct API Key and no base URL parameter leaves baseURL as default", async () => {
         await myponto.configure(process.env.PONTO_API_KEY)
-        return expect(myponto.getBaseUrl()).toMatch(/api.myponto.com/)
+        return expect(myponto.getBaseUrl()).toMatch(new RegExp(defaultBaseUrl, "g"))
     })
     test("Configuring with a correct API Key and an empty string \"\" as base URL parameter changes baseURL to \"/”\"", async () => {
         await myponto.configure(process.env.PONTO_API_KEY, "").catch(e => e)
@@ -39,7 +42,7 @@ describe("Testing Ponto object creation and configuration", () => {
     })
 
     afterAll(() => {
-        myponto.configure(process.env.PONTO_API_KEY, "https://api.myponto.com/")
+        myponto.configure(process.env.PONTO_API_KEY, defaultBaseUrl)
     })
 
 })

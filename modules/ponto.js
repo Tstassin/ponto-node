@@ -2,9 +2,12 @@ const axios = require('axios')
 
 module.exports = class Ponto {
 
+    //GLOBALS
+    async getDefaultBaseUrl() { return "https://api.myponto.com/" }
+
     constructor() {
+        // url and api_key are set using configure()
         this.options = {
-            url: 'https://api.myponto.com/',
             method: 'get',
             responseType: 'json',
             headers: {
@@ -28,14 +31,18 @@ module.exports = class Ponto {
     async configure(api_key, baseUrl) {
         if (!api_key) throw "Please provide at least an API Key as argument"
         this.api_key = api_key
+
         let bearer = "Bearer " + api_key
         this.options.headers.Authorization = bearer
+
         console.log("API Key correctly set")
-        if (baseUrl === "" || baseUrl === "/") {
+        if (baseUrl == "" || baseUrl == "/") {
             this.options.url = "/"
             console.log("given empty base URL, replacing default url with \"/\"")
         } else if (!baseUrl) {
-            console.log("Using default base URL : " + this.options.url)
+            let defaultBaseUrl = await this.getDefaultBaseUrl()
+            this.options.url = defaultBaseUrl
+            console.log("Using default base URL : " + defaultBaseUrl)
         } else {
             this.options.url = baseUrl
             console.log("Base URL now changed to : " + baseUrl)
