@@ -37,8 +37,8 @@ module.exports = class Ponto {
 
         console.log("API Key correctly set")
         if (baseUrl == "" || baseUrl == "/") {
-            this.options.url = "/"
-            console.log("given empty base URL, replacing default url with \"/\"")
+            this.options.url = ""
+            console.log("given empty base URL, setting base URL to the empty string \"\"")
         } else if (!baseUrl) {
             let defaultBaseUrl = await this.getDefaultBaseUrl()
             this.options.url = defaultBaseUrl

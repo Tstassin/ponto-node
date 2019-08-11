@@ -30,10 +30,10 @@ describe("Testing Ponto object creation and configuration", () => {
         await myponto.configure(process.env.PONTO_API_KEY)
         return expect(myponto.getBaseUrl()).toMatch(new RegExp(defaultBaseUrl, "g"))
     })
-    test("Configuring with a correct API Key and an empty string \"\" as base URL parameter changes baseURL to \"/”\"", async () => {
+    test("Configuring with a correct API Key and an empty string \"\" as base URL parameter changes baseURL to the empty string \"\"", async () => {
         await myponto.configure(process.env.PONTO_API_KEY, "").catch(e => e)
         //We throm away the error returned when configuring with an empty base URL
-        return expect(myponto.getBaseUrl()).toMatch(/\//)
+        return expect(myponto.getBaseUrl()).toMatch(/^$/)
     })
     test("Configuring with a correct API Key and a custom non-empty base URL parameter replaces baseUrl with this value", async () => {
         await myponto.configure(process.env.PONTO_API_KEY, "https://base.url").catch(e => e)
